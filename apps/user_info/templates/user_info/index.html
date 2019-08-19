@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'user_info/css/bootstrap.css'%}">
+    <link rel="stylesheet" href="{% static 'user_info/css/font-awesome.min.css'%}">
+    <style>
+        .formpanel{
+            width: 45%;
+            display: inline-block;
+            vertical-align: top;
+        }
+    </style>
+    <title>Coding Dojo Login/Registration Page</title>
+</head>
+<body>
+    <div class="container">
+    <h1>Login and Registration</h1>
+        <form class="formpanel" action="/register" method="post">
+            {% csrf_token %}
+            <h2>Registration</h2>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        {% if "register" in message.tags %}
+                            <li>{{message}}</li> 
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <div class="form-group form-inline">
+                <label for="first_name">Frist Name: </label>
+                <input type="text" name="first_name" class="form-control" >
+            </div>
+            <div class="form-group form-inline">
+                <label for="last_name">Last Name: </label>
+                <input type="text" name="last_name" class="form-control" >
+            </div>
+            <div class="form-group form-inline">
+                <label for="email">Email: </label>
+                <input type="text" name="email" class="form-control" >
+            </div>
+            <div class="form-group form-inline">
+                <label for="password">Password: </label>
+                <input type="text" name="password" class="form-control" >
+            </div>
+            <div class="form-group form-inline">
+                <label for="confirmpassword"> Confirm Password: </label>
+                <input type="text" name="confirmpassword" class="form-control" >
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <form class="formpanel" action="/login" method="post">
+            {% csrf_token %}
+            <h2>Login</h2>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    {% if "login" in message.tags %}
+                        <li>{{message}}</li> 
+                    {% endif %}                
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="form-group form-inline">
+                <label for="email">Email: </label>
+                <input type="text" name="email" class="form-control" >
+            </div>
+            <div class="form-group form-inline">
+                <label for="password">Password: </label>
+                <input type="text" name="password" class="form-control" >
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    
+</body>
+</html>

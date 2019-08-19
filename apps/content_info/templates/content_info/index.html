@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'content_info/css/bootstrap.css'%}">
+    <link rel="stylesheet" href="{% static 'content_info/css/font-awesome.min.css'%}">
+    
+    <style>
+        .formpanel{
+            width: 45%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .comment{
+            margin-left: 40px;
+        }
+        .commentbox{
+            margin-left: 40px;
+        }
+    </style>
+    <title>Coding Dojo Wall</title>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-light bg-light justify-content-between">
+            <a class="navbar-brand">Coding Dojo Wall</a>
+            <form class="form-inline">
+              <p class="mr-sm-2">{{fname}} {{lname}}</p>
+              <a class="my-2 my-sm-0" href="/destroy">Log Out</a>
+            </form>
+        </nav>
+        <form action="{{id}}/addpost" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea class="form-control" id="post" name="message" rows="7"></textarea>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <button class="btn btn-primary" type="submit">Post a message</button>
+            </div>
+        </form>
+     
+        {% for message in messages %}
+        <h6>{{message.user.first_name}} {{message.user.last_name}} - {{message.created_at}}</h6>
+         {% if message.user.id == id %}
+            <a href="{{id}}/deletemessage/{{message.id}}">Delete</a>
+         {% endif %}
+        <p class="post">{{message.message}}</p>
+
+            {% for comment in comments %}
+                {% if comment.message.id == message.id %}
+                <h7 class="comment">{{comment.user.first_name}} {{comment.user.last_name}} - {{comment.created_at}}</h7>
+                <p class="comment">{{comment.comment}}</p>
+                {% endif %}
+            {% endfor %}
+        
+        <form class="commentbox" action="{{id}}/addcomment" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input hidden name="messageid" value="{{message.id}}">
+                <textarea class="form-control" id="post" name="comment" rows="3"></textarea>
+            </div>
+            <div class="d-flex flex-row-reverse">
+                <button class="btn btn-dark" type="submit">Post a comment</button>
+            </div>
+        </form>
+        {% endfor %}
+        
+    </div>
+
+    
+</body>
+</html>
